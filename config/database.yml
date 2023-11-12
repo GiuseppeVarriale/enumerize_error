@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 25
+  url: <%= ENV["DATABASE_URL"] %>
+  variables:
+    statement_timeout: <%= ENV["pg_statement_timeout"] || 1500 %>
+    lock_timeout: <%= ENV["pg_lock_timeout"] || 100 %>
+
+# Os timeouts são propositalmente curtos em desenvolvimento para nos forçarmos
+# a melhorar as queries. Em desenvolvimento são statement 5000 e lock 750.
+# Só aumente para o mínimo necessário para conseguir trabalhar.
+
+development:
+  <<: *default
+  database: enumerize_error_development
+
+test:
+  <<: *default
+  database: enumerize_error_development_test
